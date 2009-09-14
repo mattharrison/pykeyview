@@ -1,0 +1,26 @@
+pykeyview
+=========
+
+A simple OSD display using (pygtk) for displaying keystrokes.
+Possibly useful for screencasts or presentations (live coding!).
+
+Uses/includes ``pyxhook.py`` from pykeylogger.sf.net as such it
+is available under the terms of GPL2.
+
+requires
+========
+
+python bindings for X
+
+TODO
+====
+
+  * Move to cairo?
+  * Right click context menu
+  
+    * Quit
+    * Transparency?
+    * Font size control
+    * Mapping to replaces chars/keystrokes
+    * Only listen to certain app
+
