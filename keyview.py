@@ -24,6 +24,7 @@ class SimpleTest:
         self.menu = xml.get_widget('config-menu')
         self.init_menu()
         self.hm = hm
+        self.active = True
         hm.KeyDown = self.hook_manager_event
         xml.signal_autoconnect(self)
         self.max_size = 10
@@ -31,13 +32,22 @@ class SimpleTest:
     def init_menu(self):
         self.font_item = gtk.MenuItem('set font...')
 
-        self.on_item = gtk.MenuItem('off')
+        self.on_item = gtk.CheckMenuItem('on')
+        self.on_item.set_active(True)
+        self.on_item.connect('activate', self.toggle_active)
+        
         self.quit_item = gtk.MenuItem('quit')
         self.quit_item.connect('activate', self.quit)
+
         for item in [self.font_item, self.on_item, self.quit_item]:
             self.menu.append(item)
             item.show()
 
+    def toggle_active(self, widget):
+        # active is state after click
+        self.active = widget.get_active()
+
+            
     def quit(self, widget):
         self.hm.cancel()
         gtk.main_quit()
@@ -52,9 +62,10 @@ class SimpleTest:
         
         
     def hook_manager_event(self, event):
-        old = self.key_strokes.get_text()
-        new_text = (old + event.Key)[-self.max_size:]
-        self.key_strokes.set_text(new_text)
+        if self.active:
+            old = self.key_strokes.get_text()
+            new_text = (old + event.Key)[-self.max_size:]
+            self.key_strokes.set_text(new_text)
 
 
 if __name__ == '__main__':
