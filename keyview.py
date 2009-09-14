@@ -23,7 +23,7 @@ class SimpleTest:
         self.menu = xml.get_widget('config-menu')
         self.init_menu()
         self.hm = hm
-        hm.KeyUp = self.hook_manager_event
+        hm.KeyDown = self.hook_manager_event
         xml.signal_autoconnect(self)
         self.max_size = 10
 
