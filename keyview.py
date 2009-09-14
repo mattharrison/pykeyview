@@ -15,6 +15,7 @@ def get_hook_manager():
     hm.start()
     return hm
 
+
 class SimpleTest:
     def __init__(self, hm):
         xml = gtk.glade.XML('keyview.libglade')
@@ -29,12 +30,19 @@ class SimpleTest:
 
     def init_menu(self):
         self.font_item = gtk.MenuItem('set font...')
+
         self.on_item = gtk.MenuItem('off')
         self.quit_item = gtk.MenuItem('quit')
+        self.quit_item.connect('activate', self.quit)
         for item in [self.font_item, self.on_item, self.quit_item]:
             self.menu.append(item)
             item.show()
 
+    def quit(self, widget):
+        self.hm.cancel()
+        gtk.main_quit()
+    
+            
     def on_eventbox1_popup_menu(self, *args):
         self.menu.show()
 
@@ -49,9 +57,9 @@ class SimpleTest:
         self.key_strokes.set_text(new_text)
 
 
-    
-gtk.gdk.threads_init() 
-hm = get_hook_manager()
-test = SimpleTest(hm)
-test.window.show()
-gtk.main()
+if __name__ == '__main__':
+    gtk.gdk.threads_init() 
+    hm = get_hook_manager()
+    test = SimpleTest(hm)
+    test.window.show()
+    gtk.main()
