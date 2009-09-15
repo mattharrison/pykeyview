@@ -16,6 +16,7 @@ TODO
 ====
 
   * Move to cairo?
+  * Catch ctr-c signal and kill thread
   * Right click context menu
   
     * Quit - DONE
@@ -24,4 +25,5 @@ TODO
     * Font size control - DONE
     * Mapping to replaces chars/keystrokes
     * Only listen to certain app
+
 

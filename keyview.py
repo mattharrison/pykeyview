@@ -4,6 +4,40 @@ import gtk, gtk.glade
 
 import pyxhook
 
+# Alter the appearance of some key events
+KEY_MAP = {
+    'Return':'\n',
+    'Control_L':'C-',
+    'Control_R':'C-',
+    'Alt_L':'M-',
+    'Alt_R':'M-',
+    'Shift_L':'',
+    'Shift_R':'',
+    'space': ' ',
+    'parenleft': '(',
+    'parenright': ')',
+    'bracketleft': '[',
+    'bracketright': ']',
+    'braceleft': '{',
+    'braceright': '}',
+    'minus': '-',
+    'plus': '+',
+    'asterisk': '*',
+    'equal': '=',
+    'colon': ':',
+    'comma': ',',
+    'apostrophe': "'",
+    'quotedbl' : '"',
+    'underscore' : '_',
+    'numbersign' : '#',
+    'percent' : '%',
+    'exclam' : '!',
+    'period' : '.',
+    'slash' : '/',
+    'backslash' : '\\',
+    'question' : '?',
+    }
+
 def get_hook_manager():
     hm = pyxhook.HookManager()
     hm.HookKeyboard()
@@ -16,7 +50,7 @@ def get_hook_manager():
     return hm
 
 
-class SimpleTest:
+class GTKKeyView:
     def __init__(self, hm):
         xml = gtk.glade.XML('keyview.libglade')
         self.window = xml.get_widget('window1')
@@ -88,13 +122,15 @@ class SimpleTest:
     def hook_manager_event(self, event):
         if self.active:
             old = self.key_strokes.get_text()
-            new_text = (old + event.Key)[-self.max_size:]
+            typed = event.Key
+            typed = KEY_MAP.get(typed, typed)
+            new_text = (old + typed)[-self.max_size:]
             self.update_text(new_text, self.font)
 
 
 if __name__ == '__main__':
     gtk.gdk.threads_init() 
     hm = get_hook_manager()
-    test = SimpleTest(hm)
+    test = GTKKeyView(hm)
     test.window.show()
     gtk.main()
