@@ -18,9 +18,10 @@ TODO
   * Move to cairo?
   * Right click context menu
   
-    * Quit
+    * Quit - DONE
+    * Toggle listen - DONE
     * Transparency?
-    * Font size control
+    * Font size control - DONE
     * Mapping to replaces chars/keystrokes
     * Only listen to certain app
 

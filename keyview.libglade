@@ -26,137 +26,61 @@
             <property name="label" translatable="yes">Key Show
 Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf 
 </property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="width_chars">20</property>
             <signal name="button_press_event" handler="button_handler" after="yes"/>
             <signal name="key_press_event" handler="key_event"/>
             <signal name="popup_menu" handler="popup_handler_2" after="yes"/>
-            <attributes>
-              <attribute name="style" value="normal"/>
-              <attribute name="weight" value="bold"/>
-              <attribute name="size" value="1200"/>
-              <attribute name="absolute-size" value="50000"/>
-            </attributes>
           </widget>
         </child>
       </widget>
     </child>
   </widget>
-  <widget class="GtkDialog" id="unused-dialog1">
+  <widget class="GtkFontSelectionDialog" id="fontselectiondialog1">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Select OSD Font</property>
+    <property name="modal">True</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
-    <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+    <child internal-child="font_selection">
+      <widget class="GtkFontSelection" id="fontsel-font_selection1">
         <property name="visible">True</property>
+        <property name="border_width">5</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">12</property>
         <child>
-          <widget class="GtkNotebook" id="notebook1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <child>
-              <widget class="GtkFontButton" id="fontbutton1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Look and Feel</property>
-              </widget>
-              <packing>
-                <property name="tab_fill">False</property>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRecentChooserWidget" id="recentchooser1">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <property name="limit">50</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Apps</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkTreeView" id="treeview1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </widget>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">View</property>
-              </widget>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="position">1</property>
-          </packing>
+          <placeholder/>
         </child>
-        <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="layout_style">end</property>
-            <child>
-              <widget class="GtkButton" id="button1">
-                <property name="label" translatable="yes">ok</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="apply_settings"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button2">
-                <property name="label" translatable="yes">cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="cancel_settings"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
+      </widget>
+    </child>
+    <child internal-child="cancel_button">
+      <widget class="GtkButton" id="fontsel-cancel_button1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </widget>
+    </child>
+    <child internal-child="apply_button">
+      <widget class="GtkButton" id="fontsel-apply_button1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </widget>
+    </child>
+    <child internal-child="ok_button">
+      <widget class="GtkButton" id="fontsel-ok_button1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
       </widget>
     </child>
   </widget>
