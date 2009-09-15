@@ -4,6 +4,14 @@ import gtk, gtk.glade
 
 import pyxhook
 
+# Want to handle/show these in a nice emacsy way
+MODIFIERS = {
+    'Control_L':1,
+    'Control_R':1,
+    'Alt_L':1,
+    'Alt_R':1,
+    }
+
 # Alter the appearance of some key events
 KEY_MAP = {
     'Return':'\n',
@@ -20,10 +28,14 @@ KEY_MAP = {
     'bracketright': ']',
     'braceleft': '{',
     'braceright': '}',
+    'bar': '|',
     'minus': '-',
     'plus': '+',
     'asterisk': '*',
     'equal': '=',
+    'less': '<',
+    'greater': '>',
+    'semicolon': ';',
     'colon': ':',
     'comma': ',',
     'apostrophe': "'",
@@ -59,9 +71,11 @@ class GTKKeyView:
         self.font_dialog = xml.get_widget('fontselectiondialog1')
         self.font = None # text of font description from selection dialog
         self.init_menu()
+        self.pressed = {} # keep track of whats pushed
         self.hm = hm
         self.active = True
-        hm.KeyDown = self.hook_manager_event
+        hm.KeyDown = self.hook_manager_down_event
+        hm.KeyUp = self.hook_manager_up_event
         xml.signal_autoconnect(self)
         self.max_size = 30
 
@@ -118,13 +132,30 @@ class GTKKeyView:
             font_desc_text = ''
         pango_markup = """<span %s>%s</span>""" % (font_desc_text, text)
         self.key_strokes.set_markup(pango_markup)
+
+    def hook_manager_up_event(self, event):
+        if event.Key in self.pressed:
+            del self.pressed[event.Key]
         
-    def hook_manager_event(self, event):
+    def hook_manager_down_event(self, event):
+        #hm.printevent(event)
         if self.active:
             old = self.key_strokes.get_text()
             typed = event.Key
+
+            # hack to deal with ctr modifiers in emacsy way
+            modifiers = []
+            postfix = ''
+            for pushed in self.pressed.keys():
+                mod = KEY_MAP.get(pushed, pushed)
+                if not old.endswith(mod):
+                    modifiers.append(mod)
+                postfix = ' '
+            if event.Key in MODIFIERS:
+                self.pressed[event.Key] = 1
+            
             typed = KEY_MAP.get(typed, typed)
-            new_text = (old + typed)[-self.max_size:]
+            new_text = (old + ''.join(modifiers) + typed + postfix)[-self.max_size:]
             self.update_text(new_text, self.font)
 
 
