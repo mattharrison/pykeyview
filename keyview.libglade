@@ -7,9 +7,8 @@
     <property name="window_position">mouse</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">utility</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
+    <property name="transient_for">fontselectiondialog1</property>
     <property name="opacity">0.20000000000000001</property>
     <signal name="popup_menu" handler="handle-popup"/>
     <child>
@@ -27,7 +26,6 @@
 Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf 
 </property>
             <property name="use_markup">True</property>
-            <property name="wrap">True</property>
             <property name="width_chars">20</property>
             <signal name="button_press_event" handler="button_handler" after="yes"/>
             <signal name="key_press_event" handler="key_event"/>

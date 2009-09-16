@@ -10,7 +10,7 @@ is available under the terms of GPL2.
 requires
 ========
 
-python bindings for X
+python bindings for X >= 1.4
 
 TODO
 ====
