@@ -164,4 +164,5 @@ if __name__ == '__main__':
     hm = get_hook_manager()
     test = GTKKeyView(hm)
     test.window.show()
+    test.window.set_keep_above(True) #ensure visibility
     gtk.main()
