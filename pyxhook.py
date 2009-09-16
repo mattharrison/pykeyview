@@ -39,7 +39,6 @@ import os
 import re
 import time
 import threading
-import Image
 
 from Xlib import X, XK, display, error
 from Xlib.ext import record
