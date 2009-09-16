@@ -73,7 +73,7 @@ class GTKKeyView:
         self.font_dialog = xml.get_widget('fontselectiondialog1')
         self.font = None # text of font description from selection dialog
         self.init_menu()
-        self.pressed = {} # keep track of whats pushed
+        self.pressed_modifiers = {} # keep track of whats pushed
         self.hm = hm
         self.active = True
         hm.KeyDown = self.hook_manager_down_event
@@ -138,31 +138,30 @@ class GTKKeyView:
         self.key_strokes.set_markup(pango_markup)
 
     def hook_manager_up_event(self, event):
-        if event.Key in self.pressed:
-            del self.pressed[event.Key]
+        if event.Key in self.pressed_modifiers:
+            del self.pressed_modifiers[event.Key]
         
     def hook_manager_down_event(self, event):
         #hm.printevent(event)
         if self.active:
-            old = self.key_strokes.get_text()
             e_key = event.Key
 
             # hack to deal with ctr modifiers in emacsy way
             modifiers = []
             postfix = ''
-            for pushed in self.pressed.keys():
-                mod = KEY_MAP.get(pushed, pushed)
-                if not old.endswith(mod):
+            for modifier in self.pressed_modifiers.keys():
+                mod = KEY_MAP.get(modifier, modifier)
+                if self.keys and not self.keys[-1].text == mod:
                     modifiers.append(mod)
                 postfix = ' '
+                
             if event.Key in MODIFIERS:
-                self.pressed[event.Key] = 1
-            
-            typed = KEY_MAP.get(e_key, e_key)
-            if e_key == 'BackSpace' and not self.show_backspace:
+                self.pressed_modifiers[event.Key] = 1
+            elif e_key == 'BackSpace' and not self.show_backspace:
                 if self.keys:
                     self.keys.pop()
             else:
+                typed = KEY_MAP.get(e_key, e_key)
                 self.keys.append(Text(typed, postfix=postfix, prefix=''.join(modifiers)))
 
             # limit line lengths
