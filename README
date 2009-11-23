@@ -12,6 +12,13 @@ requires
 
 python bindings for X >= 1.4
 
+Note
+====
+
+As per Bug 20500 [0] X record extension is borked on recent versions
+
+0 - http://bugs.freedesktop.org/show_bug.cgi?id=20500
+
 TODO
 ====
 

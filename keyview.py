@@ -10,6 +10,7 @@ MODIFIERS = {
     'Control_R':1,
     'Alt_L':1,
     'Alt_R':1,
+    'Super_L':1,
     }
 
 # Alter the appearance of some key events
@@ -64,6 +65,7 @@ def get_hook_manager():
 
 class GTKKeyView:
     def __init__(self, hm):
+
         xml = gtk.glade.XML('keyview.libglade')
         self.window = xml.get_widget('window1')
         self.window.connect('destroy', self.quit)
