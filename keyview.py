@@ -1,5 +1,5 @@
 import sys
-
+from xml.sax.saxutils import escape, quoteattr
 import gtk, gtk.glade
 
 import pyxhook
@@ -133,10 +133,10 @@ class GTKKeyView:
         http://www.pygtk.org/docs/pygtk/pango-markup-language.html
         """
         if font_desc:
-            font_desc_text = 'font_desc="%s"' % font_desc
+            font_desc_text = 'font_desc=%s' % quoteattr(font_desc)
         else:
             font_desc_text = ''
-        pango_markup = """<span %s>%s</span>""" % (font_desc_text, text)
+        pango_markup = """<span %s>%s</span>""" % (font_desc_text, escape(text))
         self.key_strokes.set_markup(pango_markup)
 
     def hook_manager_up_event(self, event):
