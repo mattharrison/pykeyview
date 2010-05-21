@@ -11,11 +11,13 @@ requires
 ========
 
 python bindings for X >= 1.4
+xorg >= 1.7.6
 
 Note
 ====
 
-As per Bug 20500 [0] X record extension is borked on recent versions
+As per Bug 20500 [0] X record extension is borked on versions <
+1.7.6(?).  The author is running 1.7.6 and it is working again!
 
 0 - http://bugs.freedesktop.org/show_bug.cgi?id=20500
 
@@ -23,14 +25,19 @@ TODO
 ====
 
   * Move to cairo?
-  * Catch ctr-c signal and kill thread
+  * Catch ctr-c signal and kill thread - DONE
   * Right click context menu
   
     * Quit - DONE
     * Toggle listen - DONE
     * Transparency?
     * Font size control - DONE
-    * Mapping to replaces chars/keystrokes
+    * Mapping to replaces chars/keystrokes - DONE
     * Only listen to certain app
 
+Similar Tools
+=============
 
+CommandLog mode is an emacs specific minor mode [1]
+
+1 - http://www.emacswiki.org/emacs/CommandLogMode
