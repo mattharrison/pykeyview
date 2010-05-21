@@ -1,4 +1,3 @@
-import sys
 from xml.sax.saxutils import escape, quoteattr
 import gtk, gtk.glade
 
