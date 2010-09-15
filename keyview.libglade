@@ -26,6 +26,8 @@
 Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf 
 </property>
             <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+            <property name="ellipsize">start</property>
             <property name="width_chars">20</property>
             <signal name="button_press_event" handler="button_handler" after="yes"/>
             <signal name="key_press_event" handler="key_event"/>
