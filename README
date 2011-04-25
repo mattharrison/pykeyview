@@ -40,4 +40,7 @@ Similar Tools
 
 CommandLog mode is an emacs specific minor mode [1]
 
+key-mon is a linux utility more towards keyboard/mouse commands [2]
+
 1 - http://www.emacswiki.org/emacs/CommandLogMode
+2 - http://code.google.com/p/key-mon/
