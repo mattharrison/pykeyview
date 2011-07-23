@@ -23,12 +23,12 @@
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_STRUCTURE_MASK</property>
             <property name="extension_events">cursor</property>
             <property name="label" translatable="yes">Key Show
-Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf 
+Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf
 </property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">start</property>
-            <property name="width_chars">20</property>
+            <property name="width_chars">80</property>
             <signal name="button_press_event" handler="button_handler" after="yes"/>
             <signal name="key_press_event" handler="key_event"/>
             <signal name="popup_menu" handler="popup_handler_2" after="yes"/>

@@ -28,6 +28,8 @@ KEY_MAP = {
     'bracketright': ']',
     'braceleft': '{',
     'braceright': '}',
+    'BackSpace': ' BS',
+    'Delete': ' DEL',
     'bar': '|',
     'minus': '-',
     'plus': '+',
@@ -72,7 +74,7 @@ class GTKKeyView:
         self.key_strokes.set_alignment(.1, 0)
         self.menu = xml.get_widget('config-menu')
         self.font_dialog = xml.get_widget('fontselectiondialog1')
-        self.font = None # text of font description from selection dialog
+        self.font = 'Courier Bold 44' #None # text of font description from selection dialog
         self.init_menu()
         self.pressed_modifiers = {} # keep track of whats pushed
         self.hm = hm
@@ -81,17 +83,17 @@ class GTKKeyView:
         hm.KeyUp = self.hook_manager_up_event
         xml.signal_autoconnect(self)
         self.max_lines = 3
-        self.show_backspace = False
+        self.show_backspace = True
         self.keys = [] #stack of keys typed
 
     def init_menu(self):
         self.font_item = gtk.MenuItem('set font...')
         self.font_item.connect('activate', self.font_select)
-        
+
         self.on_item = gtk.CheckMenuItem('listening')
         self.on_item.set_active(True)
         self.on_item.connect('activate', self.toggle_active)
-        
+
         self.quit_item = gtk.MenuItem('quit')
         self.quit_item.connect('activate', self.quit)
 
@@ -106,24 +108,24 @@ class GTKKeyView:
         cur_text = self.key_strokes.get_text()
         self.update_text(cur_text, self.font)
 
-    
+
     def toggle_active(self, widget):
         # active is state after click
         self.active = widget.get_active()
 
-            
+
     def quit(self, widget):
         self.hm.cancel()
         gtk.main_quit()
-    
-            
+
+
     def on_eventbox1_popup_menu(self, *args):
         self.menu.show()
 
     def on_eventbox1_button_press_event(self, widget, event):
         if event.type == gtk.gdk.BUTTON_PRESS and event.button == 3:
             self.menu.popup(None, None, None, event.button, event.get_time())
-        
+
     def update_text(self, text, font_desc=None):
         """
         see
@@ -141,7 +143,7 @@ class GTKKeyView:
     def hook_manager_up_event(self, event):
         if event.Key in self.pressed_modifiers:
             del self.pressed_modifiers[event.Key]
-        
+
     def hook_manager_down_event(self, event):
         #hm.printevent(event)
         if self.active:
@@ -155,7 +157,7 @@ class GTKKeyView:
                 if self.keys and not self.keys[-1].text == mod:
                     modifiers.append(mod)
                 postfix = ' '
-                
+
             if event.Key in MODIFIERS:
                 self.pressed_modifiers[event.Key] = 1
             elif e_key == 'BackSpace' and not self.show_backspace:
@@ -168,7 +170,7 @@ class GTKKeyView:
             # limit line lengths
             self.keys = limit_text(self.keys, self.max_lines)
             new_text = ''.join([repr(x) for x in self.keys])
-            
+
             self.update_text(new_text, self.font)
 
 def limit_text(text_list, max_lines):
@@ -179,12 +181,12 @@ def limit_text(text_list, max_lines):
     >>> lines = [Text(x) for x in 'foo\nbar\nbaz']
     >>> len(limit_text(lines, 2)) #from bar to end
     7
-    
+
     """
      # limit line lengths
     new_line_idx = [i for i,x in enumerate(text_list) if x.text == '\n']
     if len(new_line_idx) >= max_lines:
-        new_start = new_line_idx[-max_lines] + 1 
+        new_start = new_line_idx[-max_lines] + 1
         text_list = text_list[new_start:]
     return text_list
 
@@ -195,12 +197,12 @@ class Text(object):
         self.text = text
         self.prefix = prefix
         self.postfix = postfix
-        
+
     def __repr__(self):
         return '%s%s%s' %(self.prefix, self.text, self.postfix)
-            
+
 def main():
-    gtk.gdk.threads_init() 
+    gtk.gdk.threads_init()
     hm = get_hook_manager()
     test = GTKKeyView(hm)
     test.window.show()
@@ -218,5 +220,5 @@ def test():
 if __name__ == '__main__':
     main()
 
-    
-        
+
+
