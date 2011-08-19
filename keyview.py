@@ -87,7 +87,7 @@ class GTKKeyView:
         self.window = xml.get_widget('window1')
         self.window.connect('destroy', self.quit)
         self.key_strokes = xml.get_widget('label1')
-        self.key_strokes.set_alignment(.1, 0)
+        self.key_strokes.set_alignment(0, 0)
         self.menu = xml.get_widget('config-menu')
         self.font_dialog = xml.get_widget('fontselectiondialog1')
         self.font = 'Courier Bold 30' #None # text of font description from selection dialog
