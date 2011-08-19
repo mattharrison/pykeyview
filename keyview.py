@@ -90,7 +90,7 @@ class GTKKeyView:
         self.key_strokes.set_alignment(.1, 0)
         self.menu = xml.get_widget('config-menu')
         self.font_dialog = xml.get_widget('fontselectiondialog1')
-        self.font = 'Courier Bold 44' #None # text of font description from selection dialog
+        self.font = 'Courier Bold 30' #None # text of font description from selection dialog
         self.init_menu()
         self.pressed_modifiers = {} # keep track of whats pushed
         self.hm = hm
