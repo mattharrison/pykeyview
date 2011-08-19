@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from xml.sax.saxutils import escape, quoteattr
 import gtk, gtk.glade
+from time import time
 
 import pyxhook
 
@@ -10,17 +13,23 @@ MODIFIERS = {
     'Alt_L':1,
     'Alt_R':1,
     'Super_L':1,
+    'Shift_L':1,
+    'Shift_R':1,
     }
 
 # Alter the appearance of some key events
 KEY_MAP = {
-    'Return':'\n',
-    'Control_L':'C-',
-    'Control_R':'C-',
-    'Alt_L':'M-',
-    'Alt_R':'M-',
-    'Shift_L':'',
-    'Shift_R':'',
+    'Return':'↲',
+    'Right': '→',
+    'Left': '←',
+    'Up': '↑',
+    'Down': '↓',
+    'Control_L':'Ctrl-',
+    'Control_R':'Ctrl-',
+    'Alt_L':'Alt-',
+    'Alt_R':'Alt-',
+    'Shift_L':'⇪-',
+    'Shift_R':'⇪-',
     'space': ' ',
     'parenleft': '(',
     'parenright': ')',
@@ -28,8 +37,9 @@ KEY_MAP = {
     'bracketright': ']',
     'braceleft': '{',
     'braceright': '}',
-    'BackSpace': ' BS',
-    'Delete': ' DEL',
+    'BackSpace': '⇤',
+    'Delete': 'DEL',
+    'Tab': '↹',
     'bar': '|',
     'minus': '-',
     'plus': '+',
@@ -50,7 +60,13 @@ KEY_MAP = {
     'slash' : '/',
     'backslash' : '\\',
     'question' : '?',
-    }
+    'adiaeresis': 'ä',
+    'odiaeresis': 'ö',
+    'udiaeresis': 'ü',
+    'ssharp': 'ß',
+    'ampersand': '&',
+    'section': '§',
+}
 
 def get_hook_manager():
     hm = pyxhook.HookManager()
@@ -200,6 +216,7 @@ class Text(object):
 
     def __repr__(self):
         return '%s%s%s' %(self.prefix, self.text, self.postfix)
+
 
 def main():
     gtk.gdk.threads_init()
