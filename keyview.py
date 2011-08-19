@@ -221,14 +221,19 @@ class Text(object):
 def main():
     gtk.gdk.threads_init()
     hm = get_hook_manager()
-    test = GTKKeyView(hm)
-    test.window.show()
-    test.window.set_keep_above(True) #ensure visibility
+    view = GTKKeyView(hm)
+    w = view.window
+    w.resize(720, 170)
+    w.set_keep_above(True) #ensure visibility
+    w.set_opacity(0.8)
+    w.set_decorated(False) 
+    w.show()
+
     try:
         gtk.main()
     except KeyboardInterrupt, e:
         # kill the hook manager thread
-        test.hm.cancel()
+        view.hm.cancel()
 
 def test():
     import doctest
