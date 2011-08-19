@@ -7,15 +7,18 @@ from time import time
 import pyxhook
 
 # Want to handle/show these in a nice emacsy way
-MODIFIERS = {
-    'Control_L':1,
-    'Control_R':1,
-    'Alt_L':1,
-    'Alt_R':1,
-    'Super_L':1,
-    'Shift_L':1,
-    'Shift_R':1,
-    }
+MODIFIERS = (
+    'Control_L',
+    'Control_R',
+    'Alt_L',
+    'Alt_R',
+    'Super_L',
+)
+
+SHIFT_KEYS = (
+    'Shift_L',
+    'Shift_R',
+)
 
 # Alter the appearance of some key events
 KEY_MAP = {
@@ -100,6 +103,7 @@ class GTKKeyView:
         xml.signal_autoconnect(self)
         self.max_lines = 3
         self.show_backspace = True
+        self.show_shift = False
         self.keys = [] #stack of keys typed
         self.last_key = 0 # keep track of time
 
@@ -180,6 +184,9 @@ class GTKKeyView:
             elif e_key == 'BackSpace' and not self.show_backspace:
                 if self.keys:
                     self.keys.pop()
+            elif e_key in SHIFT_KEYS:
+                if self.show_shift:
+                    self.pressed_modifiers[e_key] = 1
             else:
                 txt = KEY_MAP.get(e_key, e_key)
 
@@ -245,7 +252,7 @@ def main():
     hm = get_hook_manager()
     view = GTKKeyView(hm)
     w = view.window
-    w.resize(360, 145)
+    w.resize(360, 150)
     w.set_keep_above(True) #ensure visibility
     w.show()
 
