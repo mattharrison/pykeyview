@@ -101,6 +101,7 @@ class GTKKeyView:
         self.max_lines = 3
         self.show_backspace = True
         self.keys = [] #stack of keys typed
+        self.last_key = 0 # keep track of time
 
     def init_menu(self):
         self.font_item = gtk.MenuItem('set font...')
@@ -174,14 +175,30 @@ class GTKKeyView:
                     modifiers.append(mod)
                 postfix = ' '
 
-            if event.Key in MODIFIERS:
-                self.pressed_modifiers[event.Key] = 1
+            if e_key in MODIFIERS:
+                self.pressed_modifiers[e_key] = 1
             elif e_key == 'BackSpace' and not self.show_backspace:
                 if self.keys:
                     self.keys.pop()
             else:
-                typed = KEY_MAP.get(e_key, e_key)
-                self.keys.append(Text(typed, postfix=postfix, prefix=''.join(modifiers)))
+                txt = KEY_MAP.get(e_key, e_key)
+
+                prefix = ''.join(modifiers)
+                txt = Text(txt, prefix, postfix)
+
+                isseq = (
+                    time() - self.last_key < 1 and
+                    len(self.keys) > 0 and
+                    self.keys[-1].is_char
+                )
+
+                if not (txt.is_char and isseq):
+                    self.keys.append(Text("\n"))
+
+                self.keys.append(txt)
+
+                self.last_key = time()
+
 
             # limit line lengths
             self.keys = limit_text(self.keys, self.max_lines)
@@ -216,6 +233,11 @@ class Text(object):
 
     def __repr__(self):
         return '%s%s%s' %(self.prefix, self.text, self.postfix)
+
+    @property
+    def is_char(self):
+        t = self.text
+        return len(t) == 1 and (t.isalnum() or t.isspace())
 
 
 def main():
