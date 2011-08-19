@@ -5,11 +5,12 @@
   <widget class="GtkWindow" id="window1">
     <property name="modal">True</property>
     <property name="window_position">mouse</property>
+    <property name="decorated">False</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">utility</property>
     <property name="urgency_hint">True</property>
     <property name="transient_for">fontselectiondialog1</property>
-    <property name="opacity">0.20000000000000001</property>
+    <property name="opacity">0.8</property>
     <signal name="popup_menu" handler="handle-popup"/>
     <child>
       <widget class="GtkEventBox" id="eventbox1">
@@ -22,13 +23,11 @@
             <property name="has_default">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_STRUCTURE_MASK</property>
             <property name="extension_events">cursor</property>
-            <property name="label" translatable="yes">Key Show
-Another line foo bar baz asfdkjdsaklfjdlaskjfdasfk fa kdfj akf lkas klf
-</property>
+            <property name="label" translatable="yes"></property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="ellipsize">start</property>
-            <property name="width_chars">80</property>
+            <property name="width_chars">40</property>
             <signal name="button_press_event" handler="button_handler" after="yes"/>
             <signal name="key_press_event" handler="key_event"/>
             <signal name="popup_menu" handler="popup_handler_2" after="yes"/>

@@ -1,26 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from xml.sax.saxutils import escape, quoteattr
 import gtk, gtk.glade
+from time import time
 
 import pyxhook
 
 # Want to handle/show these in a nice emacsy way
-MODIFIERS = {
-    'Control_L':1,
-    'Control_R':1,
-    'Alt_L':1,
-    'Alt_R':1,
-    'Super_L':1,
-    }
+MODIFIERS = (
+    'Control_L',
+    'Control_R',
+    'Alt_L',
+    'Alt_R',
+    'Super_L',
+)
+
+SHIFT_KEYS = (
+    'Shift_L',
+    'Shift_R',
+)
 
 # Alter the appearance of some key events
 KEY_MAP = {
-    'Return':'\n',
-    'Control_L':'C-',
-    'Control_R':'C-',
-    'Alt_L':'M-',
-    'Alt_R':'M-',
-    'Shift_L':'',
-    'Shift_R':'',
+    'Return':'↲',
+    'Right': '→',
+    'Left': '←',
+    'Up': '↑',
+    'Down': '↓',
+    'Control_L':'Ctrl-',
+    'Control_R':'Ctrl-',
+    'Alt_L':'Alt-',
+    'Alt_R':'Alt-',
+    'Shift_L':'⇪-',
+    'Shift_R':'⇪-',
     'space': ' ',
     'parenleft': '(',
     'parenright': ')',
@@ -28,8 +40,9 @@ KEY_MAP = {
     'bracketright': ']',
     'braceleft': '{',
     'braceright': '}',
-    'BackSpace': ' BS',
-    'Delete': ' DEL',
+    'BackSpace': '⇤',
+    'Delete': 'DEL',
+    'Tab': '↹',
     'bar': '|',
     'minus': '-',
     'plus': '+',
@@ -50,7 +63,13 @@ KEY_MAP = {
     'slash' : '/',
     'backslash' : '\\',
     'question' : '?',
-    }
+    'adiaeresis': 'ä',
+    'odiaeresis': 'ö',
+    'udiaeresis': 'ü',
+    'ssharp': 'ß',
+    'ampersand': '&',
+    'section': '§',
+}
 
 def get_hook_manager():
     hm = pyxhook.HookManager()
@@ -71,10 +90,10 @@ class GTKKeyView:
         self.window = xml.get_widget('window1')
         self.window.connect('destroy', self.quit)
         self.key_strokes = xml.get_widget('label1')
-        self.key_strokes.set_alignment(.1, 0)
+        self.key_strokes.set_alignment(0, 0)
         self.menu = xml.get_widget('config-menu')
         self.font_dialog = xml.get_widget('fontselectiondialog1')
-        self.font = 'Courier Bold 44' #None # text of font description from selection dialog
+        self.font = 'Courier Bold 30' #None # text of font description from selection dialog
         self.init_menu()
         self.pressed_modifiers = {} # keep track of whats pushed
         self.hm = hm
@@ -84,7 +103,9 @@ class GTKKeyView:
         xml.signal_autoconnect(self)
         self.max_lines = 3
         self.show_backspace = True
+        self.show_shift = False
         self.keys = [] #stack of keys typed
+        self.last_key = 0 # keep track of time
 
     def init_menu(self):
         self.font_item = gtk.MenuItem('set font...')
@@ -158,14 +179,33 @@ class GTKKeyView:
                     modifiers.append(mod)
                 postfix = ' '
 
-            if event.Key in MODIFIERS:
-                self.pressed_modifiers[event.Key] = 1
+            if e_key in MODIFIERS:
+                self.pressed_modifiers[e_key] = 1
             elif e_key == 'BackSpace' and not self.show_backspace:
                 if self.keys:
                     self.keys.pop()
+            elif e_key in SHIFT_KEYS:
+                if self.show_shift:
+                    self.pressed_modifiers[e_key] = 1
             else:
-                typed = KEY_MAP.get(e_key, e_key)
-                self.keys.append(Text(typed, postfix=postfix, prefix=''.join(modifiers)))
+                txt = KEY_MAP.get(e_key, e_key)
+
+                prefix = ''.join(modifiers)
+                txt = Text(txt, prefix, postfix)
+
+                isseq = (
+                    time() - self.last_key < 1 and
+                    len(self.keys) > 0 and
+                    self.keys[-1].is_char
+                )
+
+                if not (txt.is_char and isseq):
+                    self.keys.append(Text("\n"))
+
+                self.keys.append(txt)
+
+                self.last_key = time()
+
 
             # limit line lengths
             self.keys = limit_text(self.keys, self.max_lines)
@@ -201,17 +241,26 @@ class Text(object):
     def __repr__(self):
         return '%s%s%s' %(self.prefix, self.text, self.postfix)
 
+    @property
+    def is_char(self):
+        t = self.text
+        return len(t) == 1 and (t.isalnum() or t.isspace())
+
+
 def main():
     gtk.gdk.threads_init()
     hm = get_hook_manager()
-    test = GTKKeyView(hm)
-    test.window.show()
-    test.window.set_keep_above(True) #ensure visibility
+    view = GTKKeyView(hm)
+    w = view.window
+    w.resize(360, 150)
+    w.set_keep_above(True) #ensure visibility
+    w.show()
+
     try:
         gtk.main()
     except KeyboardInterrupt, e:
         # kill the hook manager thread
-        test.hm.cancel()
+        view.hm.cancel()
 
 def test():
     import doctest
