@@ -245,7 +245,7 @@ def main():
     hm = get_hook_manager()
     view = GTKKeyView(hm)
     w = view.window
-    w.resize(720, 170)
+    w.resize(720, 145)
     w.set_keep_above(True) #ensure visibility
     w.set_opacity(0.8)
     w.set_decorated(False) 
