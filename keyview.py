@@ -13,6 +13,12 @@ MODIFIERS = (
     'Alt_L',
     'Alt_R',
     'Super_L',
+    'Mode_switch'    
+)
+
+CHORD_PREFIXES = (
+    'f1-',
+    'f2-'
 )
 
 SHIFT_KEYS = (
@@ -22,6 +28,18 @@ SHIFT_KEYS = (
 
 # Alter the appearance of some key events
 KEY_MAP = {
+    'F1':'f1-',
+    'F2':'f2-',
+    'F3':'f3',
+    'F4':'f4',
+    'F5':'f5',
+    'F6':'f6',
+    'F7':'f7',
+    'F8':'f8',
+    'F9':'f9',
+    'F10':'f10',
+    'F11':'f11',
+    'F12':'f12',
     'Return':'↲',
     'Right': '→',
     'Left': '←',
@@ -29,6 +47,7 @@ KEY_MAP = {
     'Down': '↓',
     'Control_L':'Ctrl-',
     'Control_R':'Ctrl-',
+    'Mode_switch':'Mod4-',
     'Alt_L':'Alt-',
     'Alt_R':'Alt-',
     'Shift_L':'⇪-',
@@ -194,9 +213,10 @@ class GTKKeyView:
                 txt = Text(txt, prefix, postfix)
 
                 isseq = (
-                    time() - self.last_key < 1 and
                     len(self.keys) > 0 and
-                    self.keys[-1].is_char
+                    (self.keys[-1].is_chord_prefix
+                    or
+                    self.keys[-1].is_char and time() - self.last_key < 1)
                 )
 
                 if not (txt.is_char and isseq):
@@ -245,7 +265,9 @@ class Text(object):
     def is_char(self):
         t = self.text
         return len(t) == 1 and (t.isalnum() or t.isspace())
-
+    @property
+    def is_chord_prefix(self):
+        return self.text in CHORD_PREFIXES
 
 def main():
     gtk.gdk.threads_init()
